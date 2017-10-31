@@ -1,12 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 
-#Targeting the dir that needs work
-TAR_DIR=$1
-#Type d is getting the directory
-NUM_DIRS=$(find "$TAR_DIR"/ -type d | wc -1)
-#Type f is getting the fiels
-NUM_REG=$(find "$TAR_DIR"/ -type f | wc -1)
+cd $1       #go to the current address
 
+#finding the amount of regular files
+File=$(find $TAR_DIR -type f|wc -l)
+#finding the amount of directoers
+directories=$(find  $TAR_DIR -type d|wc -l)
 
-echo "There were $dir_number directories."
-echo "There were $regular_files regular files."
+echo "There were $directories directories."
+echo "There were $File regular files."
