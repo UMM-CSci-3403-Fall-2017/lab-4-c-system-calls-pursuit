@@ -16,6 +16,19 @@ bool is_dir(const char* path) {
    * return value from stat in case there is a problem, e.g., maybe the
    * the file doesn't actually exist.
    */
+
+bool is_dir(const char* path){
+struct stat duff;
+bool is_dir;
+int NogoCode;
+
+if((NogoCode=stat(path, &buf))!=0){
+printf("stat() return with error code %d. \n", NogoCode);
+return 1;
+{
+else{
+is_dir=S_ISDIR(duff.st_mode);
+return is_dir;
 }
 
 /* 
@@ -36,12 +49,38 @@ void process_directory(const char* path) {
    * with a matching call to chdir() to move back out of it when you're
    * done.
    */
+DIR* current_directory;
+current_directory=opendir(path);
+struct dirent* dir;
+int NOgoCode;
+chdir(path);
+if(!current_directory){
+	printf("%s\n", "Cant not open Directory");
+	exit(0);
+	}
+	/*useing a while look to run until no longer ture.
+	 * Instering pointer here readdir(), this function be be over written by another call later one, fun stuff here.
+	 */ 
+	 while((direct=(readdir(current_directory)))!=NULL){
+		 //Parsing over the dir that are not called.
+		 //useing strcomp to to compare the current directory(.) and the directory above this(..)
+		 if((strcmp(direct->d_name,".")==0)||(strcmp(direct->d_name,"..")==0)){
+			 continue;
+			 }
+			 process_path(direct->d_name);
+			 }
+++num_dirs;
+chdir("..");
+closedir(current_directory);
 }
+
+
 
 void process_file(const char* path) {
   /*
    * Update the number of regular files.
    */
+   ++num_regular;
 }
 
 void process_path(const char* path) {
@@ -51,7 +90,7 @@ void process_path(const char* path) {
     process_file(path);
   }
 }
-
+//Very helpful to have the main written all ready
 int main (int argc, char *argv[]) {
   // Ensure an argument was provided.
   if (argc != 2) {
