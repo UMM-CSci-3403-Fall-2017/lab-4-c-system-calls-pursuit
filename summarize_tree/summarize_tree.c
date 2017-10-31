@@ -16,20 +16,14 @@ bool is_dir(const char* path) {
    * return value from stat in case there is a problem, e.g., maybe the
    * the file doesn't actually exist.
    */
+struct stat directory;
+if(stat(path,&directory)==0){
+	(S_ISDIR(directory.st_mode)) ? return true : return false;
+	else{
+		return false;
+		}
+		}
 
-bool is_dir(const char* path){
-struct stat duff;
-bool is_dir;
-int NogoCode;
-
-if((NogoCode=stat(path, &buf))!=0){
-printf("stat() return with error code %d. \n", NogoCode);
-return 1;
-{
-else{
-is_dir=S_ISDIR(duff.st_mode);
-return is_dir;
-}
 
 /* 
  * I needed this because the multiple recursion means there's no way to
@@ -52,7 +46,6 @@ void process_directory(const char* path) {
 DIR* current_directory;
 current_directory=opendir(path);
 struct dirent* dir;
-int NOgoCode;
 chdir(path);
 if(!current_directory){
 	printf("%s\n", "Cant not open Directory");
@@ -61,13 +54,13 @@ if(!current_directory){
 	/*useing a while look to run until no longer ture.
 	 * Instering pointer here readdir(), this function be be over written by another call later one, fun stuff here.
 	 */ 
-	 while((direct=(readdir(current_directory)))!=NULL){
+	 while((dir=(readdir(current_directory)))!=NULL){
 		 //Parsing over the dir that are not called.
 		 //useing strcomp to to compare the current directory(.) and the directory above this(..)
-		 if((strcmp(direct->d_name,".")==0)||(strcmp(direct->d_name,"..")==0)){
+		 if((strcmp(dir->d_name,".")==0)||(strcmp(dir->d_name,"..")==0)){
 			 continue;
 			 }
-			 process_path(direct->d_name);
+			 process_path(dir->d_name);
 			 }
 ++num_dirs;
 chdir("..");

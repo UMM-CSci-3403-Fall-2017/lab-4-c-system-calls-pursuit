@@ -5,16 +5,16 @@
 #include <sys/stat.h>
 
 #define MAX_FTW_DEPTH 16
-static int num_dirs, num_regular;
+static int num_dar, danumber;
 
 // reminds me of rebotis with some of these paths.
-static int callback(const char *fpath, const struct stat *sb, int typeflag) {
-    if (typeflag==FTW_F){
-    	num_regular++;
+static int callback(const char *fpath, const struct stat *sb, int flagtype) {
+    if (flagtype==FTW_F){
+    	++danumber;
     }
-    else if (typeflag==FTW_D){
-        if(strcmp(fpath,".")!=0|| strcmp(fpath,"..")!=0){
-    	num_dirs++;
+    else if (flagtype==FTW_D){
+        if(strcmp(fpath,".")!=0||strcmp(fpath,"..")!=0){
+    	++num_dar;
         }
     }
     return 0;
@@ -22,8 +22,8 @@ static int callback(const char *fpath, const struct stat *sb, int typeflag) {
 
 int main(int argc, char* argv[]) {
     // Check arguments while setting things up
-    num_dar=0, num_regular=0;
+    num_dar=0, danumber=0;
     ftw(argv[1], callback, MAX_FTW_DEPTH);
-    printf("There were %d directories. \n", num_dirs);
-    printf("There were %d regular files. \n", num_regular);
+    printf("There were %d directories. \n", num_dar);
+    printf("There were %d regular files. \n", danumber);
 }
